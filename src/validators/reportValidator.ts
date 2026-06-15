@@ -3,8 +3,7 @@ import { validateRequest } from '../middleware/validate.js';
 
 export const getCreditOutstandingValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .withMessage('tenant must be a string')
     .trim()
@@ -45,8 +44,7 @@ export const getCreditOutstandingValidator = [
 
 export const exportReportValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .trim()
     .escape(),
@@ -74,8 +72,7 @@ export const exportReportValidator = [
 
 export const getDayDutyValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .trim()
     .escape(),
@@ -106,8 +103,7 @@ export const getDayDutyValidator = [
 
 export const exportDayDutyValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .trim()
     .escape(),
@@ -128,8 +124,7 @@ export const exportDayDutyValidator = [
 
 export const getOpCensusValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .withMessage('tenant must be a string')
     .trim()
@@ -170,8 +165,7 @@ export const getOpCensusValidator = [
 
 export const exportOpCensusValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .trim()
     .escape(),
@@ -199,8 +193,7 @@ export const exportOpCensusValidator = [
 
 export const getIpCensusValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .withMessage('tenant must be a string')
     .trim()
@@ -241,8 +234,7 @@ export const getIpCensusValidator = [
 
 export const exportIpCensusValidator = [
   query('tenant')
-    .notEmpty()
-    .withMessage('tenant identifier is required')
+    .optional()
     .isString()
     .trim()
     .escape(),

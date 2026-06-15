@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { reportService } from '../services/reportService.js';
 import { logger } from '../utils/logger.js';
+import { AuthenticatedRequest } from '../types/index.type.js';
 
 export class ReportController {
   /**
@@ -8,15 +9,21 @@ export class ReportController {
    * Fetches paginated, filtered transaction outstanding credit lists.
    */
   async getCreditOutstanding(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, from, to, page, limit, search } = req.query;
+      const { from, to, page, limit, search } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         from: String(from),
         to: String(to),
         page: page ? Number(page) : undefined,
@@ -38,15 +45,21 @@ export class ReportController {
    * Generates and streams PDF, CSV, or XLSX files to the client.
    */
   async exportReport(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, from, to, format } = req.query;
+      const { from, to, format } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         from: String(from),
         to: String(to),
       };
@@ -62,13 +75,6 @@ export class ReportController {
         if (err) {
           logger.error(`Error sending download stream: ${err}`);
         }
-        
-        // Clean up the file after streaming is complete (optional but recommended to save space)
-        try {
-          // fs.unlinkSync(filePath);
-        } catch (unlinkErr) {
-          logger.warn(`Failed to clean temporary export file: ${unlinkErr}`);
-        }
       });
     } catch (err) {
       next(err);
@@ -80,15 +86,21 @@ export class ReportController {
    * Fetches paginated, filtered patient day duty logs.
    */
   async getDayDuty(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, date, page, limit, search } = req.query;
+      const { date, page, limit, search } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         date: date ? String(date) : undefined,
         page: page ? Number(page) : undefined,
         limit: limit ? Number(limit) : undefined,
@@ -109,15 +121,21 @@ export class ReportController {
    * Generates and streams PDF or Excel files to the client.
    */
   async exportDayDuty(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, date, format } = req.query;
+      const { date, format } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         date: date ? String(date) : undefined,
       };
 
@@ -143,15 +161,21 @@ export class ReportController {
    * Fetches paginated, filtered specialties and counts for the OP Census report.
    */
   async getOpCensus(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, from, to, page, limit, search } = req.query;
+      const { from, to, page, limit, search } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         from: String(from),
         to: String(to),
         page: page ? Number(page) : undefined,
@@ -173,15 +197,21 @@ export class ReportController {
    * Generates and streams PDF or Excel files to the client.
    */
   async exportOpCensus(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, from, to, format } = req.query;
+      const { from, to, format } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         from: String(from),
         to: String(to),
       };
@@ -208,15 +238,21 @@ export class ReportController {
    * Fetches paginated, filtered specialties and counts for the IP Census report.
    */
   async getIpCensus(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, from, to, page, limit, search } = req.query;
+      const { from, to, page, limit, search } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         from: String(from),
         to: String(to),
         page: page ? Number(page) : undefined,
@@ -238,15 +274,21 @@ export class ReportController {
    * Generates and streams PDF or Excel files to the client.
    */
   async exportIpCensus(
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { tenant, from, to, format } = req.query;
+      const { from, to, format } = req.query;
+      const tenant = req.tenant;
+
+      if (!tenant) {
+        res.status(400).json({ error: 'Tenant key is missing in authorization context' });
+        return;
+      }
 
       const filters = {
-        tenant: String(tenant),
+        tenant,
         from: String(from),
         to: String(to),
       };
